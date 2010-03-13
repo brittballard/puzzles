@@ -1,35 +1,65 @@
 class ChangeCalculator
-  # One of their answers
-  def self.make_change(amount, coins = [25, 10, 5, 1])
-   coins.sort! { |a, b| b <=> a }
+  # Breadth first search
+  def self.make_change(a, list = [25, 10, 5, 1])
+   return nil if a < 0
+   return nil if a != a.floor
 
-   # memoize solutions
-   optimal_change = Hash.new do |hash, key|
-     hash[key] = if key < coins.min
-       []
-     elsif coins.include?(key)
-       [key]
-     else
-       coins.
-         # prune unhelpful coins
-         reject { |coin| coin > key }.
-
-         # prune coins that are factors of larger coins
-         inject([]) {|mem, var| mem.any? {|c| c%var == 0} ? mem : mem+[var]}.
-
-         # recurse
-         map { |coin| [coin] + hash[key - coin] }.
-
-         # prune unhelpful solutions
-         reject { |change| sum(change) != key }.
-
-         # pick the smallest, empty if none
-         min { |a, b| a.size <=> b.size } || []
+   parents = Array.new(a + 1)
+   parents[0] = 0
+   worklist = [[0, 0]]
+   while parents[a].nil? && !worklist.empty? do
+     base, starting_index = worklist.shift
+     starting_index.upto(list.size - 1) do |index|
+       coin = list[index]
+       tot = base + coin
+       if tot <= a && parents[tot].nil?
+         parents[tot] = base
+         worklist << [tot, index]
+       end
      end
    end
 
-   optimal_change[amount]
+   return nil if parents[a].nil?
+   result = []
+   while a > 0 do
+     parent = parents[a]
+     result << a - parent
+     a = parent
+   end
+   result.sort!.reverse!
   end
+  
+  # # One of their answers
+  # def self.make_change(amount, coins = [25, 10, 5, 1])
+  #  coins.sort! { |a, b| b <=> a }
+  # 
+  #  # memoize solutions
+  #  optimal_change = Hash.new do |hash, key|
+  #    hash[key] = if key < coins.min
+  #      []
+  #    elsif coins.include?(key)
+  #      [key]
+  #    else
+  #      coins.
+  #        # prune unhelpful coins
+  #        reject { |coin| coin > key }.
+  # 
+  #        # prune coins that are factors of larger coins
+  #        inject([]) {|mem, var| mem.any? {|c| c%var == 0} ? mem : mem+[var]}.
+  # 
+  #        # recurse
+  #        map { |coin| [coin] + hash[key - coin] }.
+  # 
+  #        # prune unhelpful solutions
+  #        reject { |change| sum(change) != key }.
+  # 
+  #        # pick the smallest, empty if none
+  #        min { |a, b| a.size <=> b.size } || []
+  #    end
+  #  end
+  # 
+  #  optimal_change[amount]
+  # end
   
   # My answer
   # def self.make_change(amount, coins)

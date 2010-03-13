@@ -1,0 +1,3 @@
+require 'longest_repeated_substring'
+
+LongestRepeatedSubstring.find_longest_repeated_subtring('xyzasd;klfja;sldkfja;sdkxyzasd;klfja;sldkfja;sdkxyzasd;klfja;sldkfja;sdkxyzasd;klfja;sldkfja;sdklfjaskldjf;aksdjfa;ksdfj;askdjfa;skdjf;askdjfxyzxyzasd;klfja;sldkfja;sdkxyzasd;klfja;sldkfja;sdkxyzasd;klfja;sldkfja;sdkxyzasd;klfja;sldkfja;sdklfjaskldjf;aksdjfa;ksdfj;askdjfa;skdjf;askdjfxyzxyzasd;klfja;sldkfja;sdkxyzasd;klfja;sldkfja;sdkxyzasd;klfja;sldkfja;sdkxyzasd;klfja;sldkfja;sdklfjaskldjf;aksdjfa;ksdfj;askdjfa;skdjf;askdjfxyz')
